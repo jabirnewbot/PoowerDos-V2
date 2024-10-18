@@ -19,6 +19,12 @@ public class WormDos implements Runnable {
     public WormDos(int seq, int type) {
         this.seq = seq;
         this.type = type;
+
+        // Ensure that the proxy list is not empty before trying to access it
+        if (proxies.isEmpty()) {
+            throw new IllegalStateException("Proxy list is empty, cannot proceed with attack.");
+        }
+
         this.proxy = proxies.get(new Random().nextInt(proxies.size()));
     }
 
@@ -82,6 +88,11 @@ public class WormDos implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (proxyList.isEmpty()) {
+            System.out.println("Warning: No proxies found, continuing without proxies.");
+        }
+
         return proxyList;
     }
 
